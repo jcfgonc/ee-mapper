@@ -1,3 +1,6 @@
 /.settings/
 /bin/
 /target/
+results/
+/inputspaces used in the paper/*
+/lib/*
