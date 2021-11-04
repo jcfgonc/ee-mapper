@@ -15,9 +15,9 @@ import graph.GraphReadWrite;
 import graph.StringGraph;
 import jcfgonc.eemapper.genetic.MapperGeneticOperations;
 import jcfgonc.eemapper.structures.MappingStructure;
-import jcfgonc.eemapper.structures.OrderedPair;
 import jcfgonc.genetic.GeneticAlgorithm;
 import structures.CSVWriter;
+import structures.OrderedPair;
 import structures.Ticker;
 import utils.VariousUtils;
 

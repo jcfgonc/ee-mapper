@@ -15,8 +15,8 @@ import graph.StringEdge;
 import graph.StringGraph;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import jcfgonc.eemapper.structures.MappingStructure;
-import jcfgonc.eemapper.structures.OrderedPair;
 import structures.MapOfSet;
+import structures.OrderedPair;
 import utils.VariousUtils;
 
 public class MappingAlgorithms {
@@ -235,27 +235,27 @@ public class MappingAlgorithms {
 	public static void createIsomorphism(StringGraph inputSpace, DirectedMultiGraph<OrderedPair<String>, String> pairGraph, RandomGenerator random,
 			OrderedPair<String> refPair, int deepnessLimit) {
 		Object2IntOpenHashMap<OrderedPair<String>> pairDeepness = null;
-		if (deepnessLimit >= 0) {
+	//	if (deepnessLimit >= 0) {
 			pairDeepness = new Object2IntOpenHashMap<>();
 			pairDeepness.defaultReturnValue(-1);
-		}
+	//	}
 		HashSet<String> closedSet = new HashSet<>();
 		HashSet<String> usedConcepts = new HashSet<>();
 		ArrayDeque<OrderedPair<String>> openSet = new ArrayDeque<>();
 		openSet.addLast(refPair);
-		if (deepnessLimit >= 0) {
+	//	if (deepnessLimit >= 0) {
 			pairDeepness.put(refPair, 0);
-		}
+	//	}
 		// ---------init
 		while (!openSet.isEmpty()) {
 			OrderedPair<String> currentPair = openSet.removeFirst();
 			int nextDeepness = -Integer.MAX_VALUE;
-			if (deepnessLimit >= 0) {
+	//		if (deepnessLimit >= 0) {
 				int deepness = pairDeepness.getInt(currentPair);
 				if (deepness >= deepnessLimit)
 					continue;
 				nextDeepness = deepness + 1;
-			}
+	//		}
 			// expand a vertex not in the closed set
 			if (closedSet.contains(currentPair.getLeftElement()) || closedSet.contains(currentPair.getRightElement()))
 				continue;
@@ -266,9 +266,9 @@ public class MappingAlgorithms {
 					continue;
 				// put the neighbors in the open set
 				openSet.addLast(nextPair);
-				if (deepnessLimit >= 0) {
+		//		if (deepnessLimit >= 0) {
 					pairDeepness.put(nextPair, nextDeepness);
-				}
+		//		}
 			}
 			// vertex from the open set explored, remove it from further exploration
 			closedSet.add(currentPair.getLeftElement());

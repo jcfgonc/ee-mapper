@@ -8,8 +8,8 @@ import graph.GraphAlgorithms;
 import graph.StringGraph;
 import jcfgonc.eemapper.MappingAlgorithms;
 import jcfgonc.eemapper.structures.MappingStructure;
-import jcfgonc.eemapper.structures.OrderedPair;
 import jcfgonc.genetic.operators.GeneticOperations;
+import structures.OrderedPair;
 import utils.VariousUtils;
 
 public class MapperGeneticOperations implements GeneticOperations<MappingStructure<String, String>> {
@@ -17,7 +17,7 @@ public class MapperGeneticOperations implements GeneticOperations<MappingStructu
 	private static final double BRIDGE_JUMPING_RANGE = 3;
 	private static final double LOCAL_JUMP_PROBABILITY = 0.88;
 	private static final double MUTATION_JUMP_PROBABILITY_POWER = 2.5;
-	private static final int DEEPNESS_LIMIT = -1;
+	private static final int DEEPNESS_LIMIT = Integer.MAX_VALUE;
 	private StringGraph inputSpace;
 	private ArrayList<String> vertexSetAsList;
 
@@ -71,38 +71,34 @@ public class MapperGeneticOperations implements GeneticOperations<MappingStructu
 		// offset locally?
 		if (random.nextDouble() < LOCAL_JUMP_PROBABILITY) {
 			// do a random walk on either left or right concepts (or both)
-			if (random.nextBoolean()) {
-				double r = Math.pow(random.nextDouble(), MUTATION_JUMP_PROBABILITY_POWER);
-				int hops = (int) Math.ceil(r * BRIDGE_JUMPING_RANGE);
-				leftElement = GraphAlgorithms.getVertexFromRandomWalk(random, leftElement, inputSpace, hops);
+			do {
+				if (random.nextBoolean()) {
+					double r = Math.pow(random.nextDouble(), MUTATION_JUMP_PROBABILITY_POWER);
+					int hops = (int) Math.ceil(r * BRIDGE_JUMPING_RANGE);
+					leftElement = GraphAlgorithms.getVertexFromRandomWalk(random, leftElement, inputSpace, hops);
+				}
+				if (random.nextBoolean()) {
+					double r = Math.pow(random.nextDouble(), MUTATION_JUMP_PROBABILITY_POWER);
+					int hops = (int) Math.ceil(r * BRIDGE_JUMPING_RANGE);
+					rightElement = GraphAlgorithms.getVertexFromRandomWalk(random, rightElement, inputSpace, hops);
+				}
 			}
-			if (random.nextBoolean()) {
-				double r = Math.pow(random.nextDouble(), MUTATION_JUMP_PROBABILITY_POWER);
-				int hops = (int) Math.ceil(r * BRIDGE_JUMPING_RANGE);
-				rightElement = GraphAlgorithms.getVertexFromRandomWalk(random, rightElement, inputSpace, hops);
-			}
-
 			// prevent left and right from being equals
-			while (leftElement.equals(rightElement)) {
-				double r = Math.pow(random.nextDouble(), MUTATION_JUMP_PROBABILITY_POWER);
-				int hops = (int) Math.ceil(r * BRIDGE_JUMPING_RANGE);
-				rightElement = GraphAlgorithms.getVertexFromRandomWalk(random, rightElement, inputSpace, hops);
-			}
+			while (leftElement.equals(rightElement));
 		}
 		// offset globally
 		else {
 			// do a random shift to far away on either left or right concepts (or both)
-			if (random.nextBoolean()) {
-				leftElement = VariousUtils.getRandomElementFromCollection(vertexSetAsList, random);
+			do {
+				if (random.nextBoolean()) {
+					leftElement = VariousUtils.getRandomElementFromCollection(vertexSetAsList, random);
+				}
+				if (random.nextBoolean()) {
+					rightElement = VariousUtils.getRandomElementFromCollection(vertexSetAsList, random);
+				}
 			}
-			if (random.nextBoolean()) {
-				rightElement = VariousUtils.getRandomElementFromCollection(vertexSetAsList, random);
-			}
-
 			// prevent left and right from being equals
-			while (leftElement.equals(rightElement)) {
-				rightElement = VariousUtils.getRandomElementFromCollection(vertexSetAsList, random);
-			}
+			while (leftElement.equals(rightElement));
 		}
 
 		// if (refPair.getLeftElement().equals(leftElement) && //

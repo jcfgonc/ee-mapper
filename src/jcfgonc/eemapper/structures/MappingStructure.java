@@ -8,7 +8,16 @@ import java.util.Set;
 
 import graph.DirectedMultiGraph;
 import graph.GraphReadWrite;
+import structures.OrderedPair;
 
+/**
+ * Contains the mapping graph and starting reference pair of concepts.
+ * 
+ * @author jcfgonc@gmail.com
+ *
+ * @param <V>
+ * @param <E>
+ */
 public class MappingStructure<V, E> {
 
 	private DirectedMultiGraph<OrderedPair<V>, E> pairGraph;
